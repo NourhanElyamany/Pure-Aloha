@@ -69,7 +69,7 @@ def runALOHAnode():
             failedFrames += 1
             totalTime.append(transmissions)
             
-            failedFramesarray.append(failedFrames)
+            failedFramesarray.append(transmissions)
             failedcurrenttime = time()
             Gaptime = failedcurrenttime- BeginTime
             time_fail.append(Gaptime*1000)
