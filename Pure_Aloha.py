@@ -4,7 +4,6 @@ from time import sleep, time
 import threading
 import sys
 from queue import Queue
-import matplotlib.pyplot as plt
 import math
 import plot as plot
 
@@ -143,3 +142,5 @@ print("Successful frames: " + str(successfulFrames))
 print("Effiency(kbps): " + str(Node_Number * math.exp(-2 * Node_Number)))
 
 plot.plotting(Node_Number)
+
+sys.exit()
