@@ -6,6 +6,7 @@ import sys
 from queue import Queue
 import matplotlib.pyplot as plt
 import math
+import plot as plot
 
 #Get transmition time of frames from user input.
 Tfr = float(input("Please enter Tfr(seconds)\nEnter 0 for default 10 miliseconds: "))
@@ -140,3 +141,5 @@ print("Transmited frames: " + str(transmissions))
 print("Failed frames: " + str(failedFrames))
 print("Successful frames: " + str(successfulFrames))
 print("Effiency(kbps): " + str(Node_Number * math.exp(-2 * Node_Number)))
+
+plot.plotting(Node_Number)
