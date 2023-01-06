@@ -5,13 +5,14 @@ import threading
 import sys
 from queue import Queue
 import matplotlib.pyplot as plt
+import math
 
 #Get transmition time of frames from user input.
 Tfr = float(input("Please enter Tfr(seconds)\nEnter 0 for default 10 miliseconds: "))
 if Tfr == 0.0:
     Tfr = 0.01
 
-duration = int(input("Please enter duration of simulation(seconds): "))
+duration = 2
 
 Node_Number = int(input ("please enter Number of Nodes:  "))
 Node = []
@@ -32,6 +33,7 @@ failedFramesarray = []
 successfulFramesarray = []
 time_success = []
 time_fail = []
+totalTime = []
 
 #Main part of programm. It acts like a ALOHA oriented node.
 #Each node(thread) will use this function.
@@ -44,13 +46,14 @@ def runALOHAnode():
     global lock
     global q
     global success
+    global totalTime
 
     
 
     while True:
         #Generate a random exponential variable with lambda=1/2 in miliseconds.
         #lambda=2 in poison means that lambda is 1/2 in exponential.
-        waitTime = random.exponential(0.5,None)
+        waitTime = random.exponential(1,None)
         BeginTime = time()
 
         #Now wait for the random amount of time to pass.
@@ -63,6 +66,7 @@ def runALOHAnode():
         if lock.locked():
             #Collision happens but still transmiting the frame
             failedFrames += 1
+            totalTime.append(transmissions)
             
             failedFramesarray.append(failedFrames)
             failedcurrenttime = time()
@@ -83,6 +87,7 @@ def runALOHAnode():
             channelBusy = True
             startTime = time()
             seconds = Tfr
+            
             #Sleeping for Tfr seconds means that node is transmitting and it takes Tfr seconds.
             while True:
                 currentTime = time()
@@ -90,16 +95,15 @@ def runALOHAnode():
                 elapsedTime = currentTime - startTime
             
 
-                if q.empty():
-                    pass
+                
                 #q being not empty means some other node(s) are transmitting too and this transmission is failed because of collision.
-                else:
+                if not q.empty():
                     collision = True
 
                 if elapsedTime > seconds:
                     break
             
-            # time_success.append(Gaptime*1000)
+            
             q.queue.clear()
             channelBusy = False
             lock.release()
@@ -108,7 +112,7 @@ def runALOHAnode():
                 failedFrames += 1
                 failedFramesarray.append(failedFrames)
                 failedcurrenttime = time()
-                Gaptime = failedcurrenttime- BeginTime
+                Gaptime = failedcurrenttime - BeginTime
                 time_fail.append(Gaptime*1000)
             semaphore.release()
             
@@ -135,15 +139,4 @@ print(failedFramesarray)
 print("Transmited frames: " + str(transmissions))
 print("Failed frames: " + str(failedFrames))
 print("Successful frames: " + str(successfulFrames))
-print("Throughput(kbps): " + str((successfulFrames)/duration))
-
-print("success counter: " + str(success))
-print("array: " + str(successfulFramesarray))
-
-plt.figure()
-plt.plot(duration, successfulFramesarray)
-
-plt.xlabel("time")
-plt.ylabel("successful Frames")
-plt.show()
-sys.exit()
+print("Effiency(kbps): " + str(Node_Number * math.exp(-2 * Node_Number)))
