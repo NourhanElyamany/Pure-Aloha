@@ -22,6 +22,7 @@ transmissions = 0
 failedFrames = 0
 channelBusy = False
 successfulFrames = 0
+success = 0
 lock = threading.Lock()
 #Threads will communicate with each other using this queue
 q = Queue()
@@ -42,6 +43,7 @@ def runALOHAnode():
     global channelBusy
     global lock
     global q
+    global success
 
     
 
@@ -74,8 +76,8 @@ def runALOHAnode():
 
         #If channel is not occupied(lock is unlocked).
         else:
-            
-
+            success += 1
+            successfulFramesarray.append(success)
             lock.acquire()
             collision = False
             channelBusy = True
@@ -109,6 +111,7 @@ def runALOHAnode():
                 Gaptime = failedcurrenttime- BeginTime
                 time_fail.append(Gaptime*1000)
             semaphore.release()
+            
 
 for i in range(Node_Number):
     Node_threads = threading.Thread(target = runALOHAnode)
@@ -122,6 +125,7 @@ sleep(duration)
 
 successfulFrames = transmissions - failedFrames
 
+
 # print(time_success)
 
 print(time_fail)
@@ -133,19 +137,13 @@ print("Failed frames: " + str(failedFrames))
 print("Successful frames: " + str(successfulFrames))
 print("Throughput(kbps): " + str((successfulFrames)/duration))
 
+print("success counter: " + str(success))
+print("array: " + str(successfulFramesarray))
+
 plt.figure()
-plt.plot(time_fail,failedFramesarray)
-  
-# naming the x axis
-plt.xlabel('time in miliseconds')
-# naming the y axis
-plt.ylabel('failure')
-  
-# giving a title to my graph
-plt.title('Failures')
+plt.plot(duration, successfulFramesarray)
 
-  
-# function to show the plot
+plt.xlabel("time")
+plt.ylabel("successful Frames")
 plt.show()
-
 sys.exit()
