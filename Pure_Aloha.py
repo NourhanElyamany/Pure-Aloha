@@ -13,11 +13,8 @@ if Tfr == 0.0:
 
 duration = int(input("Please enter duration of simulation(seconds): "))
 
-Node_Number =int(input ("please enter Number of Nodes:  "))
-Node =[]
-
-
-
+Node_Number = int(input ("please enter Number of Nodes:  "))
+Node = []
 
 
 
@@ -118,46 +115,6 @@ for i in range(Node_Number):
     Node_threads.daemon = True
     Node_threads.start()        
         
-#Creating threads and starting them.
-# node1 = threading.Thread(target = runALOHAnode)
-# node1.daemon = True
-# node1.start()
-
-# node2 = threading.Thread(target = runALOHAnode)
-# node2.daemon = True
-# node2.start()
-
-# node3 = threading.Thread(target = runALOHAnode)
-# node3.daemon = True
-# node3.start()
-
-# node4 = threading.Thread(target = runALOHAnode)
-# node4.daemon = True
-# node4.start()
-
-# node5 = threading.Thread(target = runALOHAnode)
-# node5.daemon = True
-# node5.start()
-
-# node6 = threading.Thread(target = runALOHAnode)
-# node6.daemon = True
-# node6.start()
-
-# node7 = threading.Thread(target = runALOHAnode)
-# node7.daemon = True
-# node7.start()
-
-# node8 = threading.Thread(target = runALOHAnode)
-# node8.daemon = True
-# node8.start()
-
-# node9 = threading.Thread(target = runALOHAnode)
-# node9.daemon = True
-# node9.start()
-
-# node10 = threading.Thread(target = runALOHAnode)
-# node10.daemon = True
-# node10.start()
 
 #wait for threads to run for a while.
 print("Please wait...\n")
@@ -185,7 +142,7 @@ plt.xlabel('time in miliseconds')
 plt.ylabel('failure')
   
 # giving a title to my graph
-plt.title('My first graph!')
+plt.title('Failures')
 
   
 # function to show the plot
